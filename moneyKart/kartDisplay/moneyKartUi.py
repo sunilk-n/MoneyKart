@@ -44,7 +44,7 @@ class MoneyKart(QtWidgets.QWidget):
         self.setLayout(layout)
 
         self.toolBar.homeBtn.clicked.connect(self.processHomeWidget)
-        self.toolBar.statsBtn.clicked.connect(self.processStatsWidget)
+        # self.toolBar.statsBtn.clicked.connect(self.processStatsWidget)
         self.toolBar.billBtn.clicked.connect(self.processPaymentWidget)
 
     def resizeEvent(self, *args, **kwargs):

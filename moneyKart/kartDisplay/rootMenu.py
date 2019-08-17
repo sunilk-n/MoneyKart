@@ -45,15 +45,15 @@ class RootToolBar(QtWidgets.QWidget):
         self.setAttribute(QtCore.Qt.WA_StyledBackground)
 
         self.homeBtn = ToolBarButton(self, text="Home")
-        self.statsBtn = ToolBarButton(self, text="Stats")
+        # self.statsBtn = ToolBarButton(self, text="Stats")
         self.billBtn = ToolBarButton(self, text="Payments")
         self.homeBtn.setStyleSheet(self.btnStyle)
-        self.statsBtn.setStyleSheet(self.btnStyle)
+        # self.statsBtn.setStyleSheet(self.btnStyle)
         self.billBtn.setStyleSheet(self.btnStyle)
 
         layout = QtWidgets.QVBoxLayout()
         layout.addWidget(self.homeBtn)
-        layout.addWidget(self.statsBtn)
+        # layout.addWidget(self.statsBtn)
         layout.addWidget(self.billBtn)
         layout.addItem(QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding))
         setLayoutAttr(layout, 0, 0)
