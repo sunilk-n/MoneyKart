@@ -24,6 +24,8 @@ class MoneyKart(QtWidgets.QWidget):
         self.cp.connectPayment.connect(self.processPaymentWidget)
         self.cp.connectDel.connect(self.deleteTransaction)
 
+        self.toolBar.homeBtn.click()
+
     def initUi(self):
         self.toolBar = RootToolBar(self)
         self.allTransactions = GetSpendEarn()
