@@ -17,6 +17,7 @@ class MoneyKart(QtWidgets.QWidget):
         self.setWindowTitle("Money Kart v{}".format(version))
         w, h = ctypes.windll.user32.GetSystemMetrics(0)/2, ctypes.windll.user32.GetSystemMetrics(1)/2
         self.resize(w, h)
+        self.setMinimumSize(w, h)
 
         self.initUi()
 

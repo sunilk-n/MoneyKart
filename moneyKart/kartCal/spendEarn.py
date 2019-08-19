@@ -1,7 +1,11 @@
+""" Spends, Earns transaction API
+"""
 from moneyKart.kartCal.utils import *
 
 
 class SpendEarn(object):
+    """ Class to maintain the spend or earn object
+    """
     def __init__(self, comment, amount, date=None, id=None, type="spend", setType='personal'):
         self._comment = comment
         self._amount = float(amount)
@@ -56,46 +60,70 @@ class SpendEarn(object):
 
 
 class GetSpendEarn(object):
+    """ Class to get the spends and earns data
+    """
     def __init__(self):
         self.jsonFile = FILEPATH
         self.updateData()
 
     def getSpends(self):
+        """ Definition to get all the spends data
+
+            :return spendDetails(list): All spend data list from json file
+        """
         spendDetails = []
-        for eachSpend in self.data['spend'].keys():
-            spendData = self.data['spend'][eachSpend]
-            spend = SpendEarn(
-                        comment=spendData[0], amount=spendData[1],
-                        date=spendData[2], id=eachSpend, type='spend',
-                        setType=spendData[3]
-                    )
-            spendDetails.append(spend)
+        if self.data:
+            for eachSpend in self.data['spend'].keys():
+                spendData = self.data['spend'][eachSpend]
+                spend = SpendEarn(
+                            comment=spendData[0], amount=spendData[1],
+                            date=spendData[2], id=eachSpend, type='spend',
+                            setType=spendData[3]
+                        )
+                spendDetails.append(spend)
         return spendDetails
 
     def getEarns(self):
-        spendDetails = []
-        for eachSpend in self.data['earn'].keys():
-            spendData = self.data['earn'][eachSpend]
-            spend = SpendEarn(
-                        comment=spendData[0], amount=spendData[1],
-                        date=spendData[2], id=eachSpend, type='earn',
-                        setType=spendData[3]
-                    )
-            spendDetails.append(spend)
-        return spendDetails
+        """ Definition to get all the earns data
+
+            :return earnDetails(list): All earn data list from json file
+        """
+        earnDetails = []
+        if self.data:
+            for eachSpend in self.data['earn'].keys():
+                spendData = self.data['earn'][eachSpend]
+                spend = SpendEarn(
+                            comment=spendData[0], amount=spendData[1],
+                            date=spendData[2], id=eachSpend, type='earn',
+                            setType=spendData[3]
+                        )
+                earnDetails.append(spend)
+        return earnDetails
 
     def updateData(self):
+        """ Definition to update the class variables
+        """
         self.data = readValues(self.jsonFile)
         self.spendEarns = self.getSpends() + self.getEarns()
         self.sortByField()
 
     def sortByField(self, field='date', ascend=False):
+        """ Definition to sort the data collected
+
+            :param field(str): Sort by field from the json file, default is data
+            :param ascend(bool): Sort by reversed data, default False
+        """
         if field == 'date':
             self.spendEarns.sort(key=lambda x:x.date, reverse=ascend)
         elif field == 'amount':
             self.spendEarns.sort(key=lambda x:x.amount, reverse=ascend)
 
     def addSpendEarn(self, spendEarn):
+        """ Definition to add the spend or earn values to the data
+
+            :param spendEarn(SpendEarn): SpendEarn object to get the data
+            :return (bool): returns True if success or False
+        """
         latest = spendEarn.id
         if not latest:
             latest = getNextEntry(self.data, spendEarn.type)
@@ -110,6 +138,12 @@ class GetSpendEarn(object):
         return True
 
     def pushEntry(self, spendEarnDict, type):
+        """ Definition to push the entry to json file
+
+        :param spendEarnDict(dict): Data dict to store the data to json
+        :param type(str): spend or earn type will only be accepted
+        :return (bool): Returns boolean if the json file is written
+        """
         dictSpendEarn = self.data[type]
         dictSpendEarn.update(spendEarnDict)
         self.data[type] = dictSpendEarn
@@ -119,6 +153,12 @@ class GetSpendEarn(object):
         return True
 
     def deleteEntry(self, id, type):
+        """ Definition to delete the entry from the data
+
+        :param id(str): Id of the data entry
+        :param type(str): spend or earn type will only be accepted
+        :return (bool): Returns boolean if the json file is written
+        """
         self.data[type].pop(id)
         with open(self.jsonFile, 'w') as fd:
             json.dump(self.data, fd, indent=2, sort_keys=True)
@@ -132,11 +172,3 @@ class GetSpendEarn(object):
         for spendEarnsIndex in range(len(self.spendEarns)):
             reverseSpendEarn.append(self.spendEarns[len(self.spendEarns)-spendEarnsIndex-1])
         return reverseSpendEarn
-
-if __name__ == '__main__':
-    a = GetSpendEarn()
-    # b = SpendEarn(comment="Rent", amount=11500,
-    #               date="01-07-2019", type="spend", setType="bill")
-    # a.addSpendEarn(b)
-    print(a.spendEarns)
-

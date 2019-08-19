@@ -14,12 +14,17 @@ class ListPackage(QtWidgets.QWidget):
         super(ListPackage, self).__init__(parent)
         self.parent = parent
         innerStyle = """
-            QtPushButton:hover{
+            QPushButton:hover{
                 background: #1E1F26;
             }
+            #amountWidget{
+                background: #283655;
+            }
         """
+        self.setAttribute(QtCore.Qt.WA_StyledBackground)
 
         widgetsList = AmountWidgets(self, spendEarns, payment=payment)
+        widgetsList.setObjectName("amountWidget")
         widgetsList.setStyleSheet(innerStyle)
         scroll = QtWidgets.QScrollArea()
         scroll.setWidget(widgetsList)
@@ -30,10 +35,14 @@ class ListPackage(QtWidgets.QWidget):
         pyQtUtils.setLayoutAttr(layout)
         layout.addWidget(scroll)
 
+        self.setObjectName("listWidget")
+
         style = """
             QWidget{
                 border: 0;
-                padding: 10px;
+            }
+            #listWidget{
+              background: #283655;
             }
         """
         self.setStyleSheet(style)
@@ -55,9 +64,11 @@ class ListPackage(QtWidgets.QWidget):
 class AmountWidgets(QtWidgets.QWidget):
     def __init__(self, parent=None, spendEarns=[], payment=None):
         super(AmountWidgets, self).__init__(parent)
+        self.setAttribute(QtCore.Qt.WA_StyledBackground)
 
         layout = QtWidgets.QVBoxLayout()
         pyQtUtils.setLayoutAttr(layout)
+
         for spendEarn in spendEarns:
             transaction = TransactionWidget(self, spendEarn, payment=payment)
             transaction.setObjectName('transaction')
@@ -105,7 +116,7 @@ class AmountWidgets(QtWidgets.QWidget):
                         }
                     """
             transaction.setStyleSheet(style)
-        # layout.addItem(QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding))
+        layout.addItem(QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding))
         self.setLayout(layout)
 
     def createGroup(self, name, widget):

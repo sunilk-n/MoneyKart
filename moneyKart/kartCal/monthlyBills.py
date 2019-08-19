@@ -1,4 +1,2 @@
-
-class MonthlyBills(object):
-    def __init__(self):
-        pass
+""" TODO: Work in progress for basic bill structures
+"""

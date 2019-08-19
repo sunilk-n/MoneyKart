@@ -124,3 +124,4 @@ dmypy.json
 
 # User ignores
 .idea/
+*.json

@@ -1,6 +1,9 @@
 from PySide2.QtWidgets import QApplication
 import sys
-sys.path.append("F:/Python softwares/moneyKart")
+import os
+
+projectPath = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+sys.path.append(projectPath)
 
 from moneyKart.kartDisplay.moneyKartUi import MoneyKart
 

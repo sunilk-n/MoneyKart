@@ -130,28 +130,24 @@ class PaymentMethods(QtWidgets.QWidget):
             pyQtUtils.StatusUpdate(self, 'warn', "Please resolve the below issue:",
                                    info="\n".join(errorMsg), title="Issue")
             return
-        try:
-            entry = SpendEarn(
-                id=self._id,
-                comment=comment,
-                type=self._type,
-                setType=self.catHolder.currentText(),
-                amount=self.amountHolder.text(),
-                date=self.dateHolder.text()
-              )
-            addTransact = self.allTransactions.addSpendEarn(entry)
-            if addTransact:
-                self.resetTextEdits()
-                self._id = None
-                pyQtUtils.StatusUpdate(self, 'info', "Successfully saved the details.", title="Success")
-                return
-            else:
-                pyQtUtils.StatusUpdate(self, 'warn', "Some issue raise for details entered", title="Issue")
-                return
-        except Exception as e:
-            pyQtUtils.StatusUpdate(self, 'error', "Unable to save the details entered please check the details entered",
-                                   info=str(e), title="Error")
+        entry = SpendEarn(
+            id=self._id,
+            comment=comment,
+            type=self._type,
+            setType=self.catHolder.currentText(),
+            amount=self.amountHolder.text(),
+            date=self.dateHolder.text()
+          )
+        addTransact = self.allTransactions.addSpendEarn(entry)
+        if addTransact:
+            self.resetTextEdits()
+            self._id = None
+            pyQtUtils.StatusUpdate(self, 'info', "Successfully saved the details.", title="Success")
             return
+        else:
+            pyQtUtils.StatusUpdate(self, 'warn', "Some issue raise for details entered", title="Issue")
+            return
+
 
     def resetTextEdits(self):
         self.typeHolder.setCurrentIndex(0)

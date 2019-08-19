@@ -3,7 +3,16 @@ import re
 import json
 import os
 
-from moneyKart import lib
+try:
+    from moneyKart import lib
+except:
+    modulePath = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    libPath = os.path.join(modulePath, 'lib')
+    os.mkdir(libPath)
+    with open(os.path.join(libPath, '__init__.py'), 'w') as libModule:
+        libModule.write('""" Data storing module\n"""')
+    from moneyKart import lib
+
 
 types = ['spend', 'earn']
 seTypes = ['personal', 'grocery', 'bill', 'salary', 'weekend', 'other']
@@ -11,13 +20,14 @@ seTypes = ['personal', 'grocery', 'bill', 'salary', 'weekend', 'other']
 fileName = "spendEarnTable.json"
 libPath = lib.__path__[0]
 FILEPATH = os.path.join(libPath, fileName)
-VERSION = "0.0.1"
+
 
 def getNextEntry(data, type):
     latest = 1
-    if data[type].keys():
+    if data[type]:
         latest = max([int(i) for i in data[type].keys()]) + 1
     return latest
+
 
 def convertFromDate(date):
     """ Must have date format as 'dd-mm-yyyy'
@@ -65,10 +75,14 @@ def addDefaultValues(values):
     with open(FILEPATH, 'w') as fd:
         json.dump(values, fd, indent=2, sort_keys=True)
 
+
 def readValues(filePath):
     with open(filePath, 'r') as fd:
         data = json.load(fd)
     return data
+
+if not os.path.exists(FILEPATH):
+    buildSpendEarnTable()
 
 if __name__ == '__main__':
     buildSpendEarnTable()
