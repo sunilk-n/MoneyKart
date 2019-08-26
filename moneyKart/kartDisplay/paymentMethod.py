@@ -64,9 +64,10 @@ class PaymentMethods(QtWidgets.QWidget):
         self.amountHolder.setPlaceholderText("0")
         self.typeHolder.addItems(types)
         self.catHolder.addItems(seTypes)
+        self.dateHolder.setDisplayFormat("dd/MM/yyyy")
 
         # Connections
-        self.typeHolder.currentTextChanged.connect(self.updateId)
+        self.typeHolder.currentIndexChanged.connect(self.updateId)
         self.saveBtn.clicked.connect(self.addEntry)
 
         if self._id:
@@ -113,7 +114,7 @@ class PaymentMethods(QtWidgets.QWidget):
         self.setLayout(layout)
 
     def updateId(self, type):
-        self._type = type
+        self._type = types[type]
 
     def addEntry(self):
         errorMsg = []

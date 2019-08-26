@@ -6,8 +6,10 @@ projectPath = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(projectPath)
 
 from moneyKart.kartDisplay.moneyKartUi import MoneyKart
+from moneyKart import update
 
 app = QApplication(sys.argv)
 gui = MoneyKart()
-gui.show()
+if not update.checkForUpdates():
+    gui.show()
 sys.exit(app.exec_())

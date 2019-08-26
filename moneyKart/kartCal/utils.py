@@ -15,7 +15,7 @@ except:
 
 
 types = ['spend', 'earn']
-seTypes = ['personal', 'grocery', 'bill', 'salary', 'weekend', 'other']
+seTypes = ['personal', 'grocery', 'bill', 'salary', 'weekend', 'fuel', 'other']
 
 fileName = "spendEarnTable.json"
 libPath = lib.__path__[0]
@@ -81,8 +81,19 @@ def readValues(filePath):
         data = json.load(fd)
     return data
 
+
+def genearateDates(toDay):
+    dateList = []
+    for each in range(1, toDay+1):
+        date = "{dd}/{mm}/{yyyy}".format(
+                                dd=each, mm=datetime.datetime.today().month,
+                                yyyy=datetime.datetime.today().year
+                            )
+        dateList.append(date)
+    return dateList
+
 if not os.path.exists(FILEPATH):
     buildSpendEarnTable()
 
 if __name__ == '__main__':
-    buildSpendEarnTable()
+    print(genearateDates(1))

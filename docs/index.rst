@@ -10,9 +10,11 @@ Usage
 What's New?
 -----------
 
-- Initial release for basic money management
-- You can view all the transactions in ``HOME`` tab
-- Now you can save the daily transactions in ``PAYMENTS`` tab
+0.1.0-beta.3 Updated on 17-08-2019
+----------------------------------
+
+- New feature added to the application for status
+- Now displaying the line chart for spends
 
 .. toctree::
     :hidden:

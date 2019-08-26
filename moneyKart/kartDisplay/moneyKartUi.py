@@ -7,6 +7,7 @@ from moneyKart.kartDisplay.rootMenu import RootToolBar
 from moneyKart.kartDisplay import pyQtUtils
 from moneyKart.kartDisplay.listPackage import ListPackage
 from moneyKart.kartDisplay.paymentMethod import PaymentMethods
+from moneyKart.kartDisplay.chartStatus import DashBoard
 from moneyKart.kartCal.spendEarn import GetSpendEarn
 
 
@@ -15,7 +16,10 @@ class MoneyKart(QtWidgets.QWidget):
         super(MoneyKart, self).__init__()
 
         self.setWindowTitle("Money Kart v{}".format(version))
-        w, h = ctypes.windll.user32.GetSystemMetrics(0)/2, ctypes.windll.user32.GetSystemMetrics(1)/2
+        if sys.platform.startswith('win'):
+            w, h = ctypes.windll.user32.GetSystemMetrics(0)/2, ctypes.windll.user32.GetSystemMetrics(1)/2
+        else:
+            w, h = 940, 560
         self.resize(w, h)
         self.setMinimumSize(w, h)
 
@@ -47,7 +51,7 @@ class MoneyKart(QtWidgets.QWidget):
         self.setLayout(layout)
 
         self.toolBar.homeBtn.clicked.connect(self.processHomeWidget)
-        # self.toolBar.statsBtn.clicked.connect(self.processStatsWidget)
+        self.toolBar.statsBtn.clicked.connect(self.processStatsWidget)
         self.toolBar.billBtn.clicked.connect(self.processPaymentWidget)
 
     def resizeEvent(self, *args, **kwargs):
@@ -79,15 +83,22 @@ class MoneyKart(QtWidgets.QWidget):
 
     @pyQtUtils.showWaitCursor
     def processStatsWidget(self):
-        self.allTransactions.updateData()
-        self.widgetLayout(QtWidgets.QWidget(self))
+        # print(self.allTransactions.sumOfSpends(8))
+        self.widgetLayout(DashBoard(self))
 
     @pyQtUtils.showWaitCursor
     def processPaymentWidget(self, *args):
-        if args:
-            self.widgetLayout(PaymentMethods(self, id=args[0], type=args[1]))
-        else:
-            self.widgetLayout(PaymentMethods(self))
+        if sys.platform.startswith('win'):
+            if args:
+                self.widgetLayout(PaymentMethods(self, id=args[0], type=args[1]))
+            else:
+                self.widgetLayout(PaymentMethods(self))
+        elif sys.platform.startswith('linux'):
+            if args and args[0]:
+                self.widgetLayout(PaymentMethods(self, id=args[0], type=args[1]))
+            else:
+                self.widgetLayout(PaymentMethods(self))
+
 
 
 if __name__ == '__main__':

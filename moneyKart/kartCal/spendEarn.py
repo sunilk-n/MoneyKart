@@ -172,3 +172,33 @@ class GetSpendEarn(object):
         for spendEarnsIndex in range(len(self.spendEarns)):
             reverseSpendEarn.append(self.spendEarns[len(self.spendEarns)-spendEarnsIndex-1])
         return reverseSpendEarn
+
+    def sumOfSpendEarn(self, month=None, type='spend'):
+        # month set to None if want to get whole total of type
+        if month:
+            amounts = [i.amount for i in self.spendEarns if i.date.month == month and i.type == type]
+        else:
+            amounts = [i.amount for i in self.spendEarns if i.type == type]
+        return str(round(sum(amounts), 2))
+
+    def spendEarnByDate(self, date, type='spend'):
+        date = convertFromDate(date)
+        amounts = [i.amount for i in self.spendEarns if i.date == date and i.type == type]
+        if amounts:
+            return round(sum(amounts), 2)
+        else:
+            return 0.0
+
+    def spendEarnByList(self):
+        earnData = []
+        spendData = []
+        today = datetime.datetime.today()
+        dateFormat = "{dd}/{mm}/{yyyy}"
+        for each in range(1, today.day+1):
+            date = dateFormat.format(
+                        dd=each, mm=today.month,
+                        yyyy=today.year
+                    )
+            spendData.append(self.spendEarnByDate(date))
+            earnData.append(self.spendEarnByDate(date, 'earn'))
+        return spendData + earnData
