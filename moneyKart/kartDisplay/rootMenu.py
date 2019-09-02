@@ -1,5 +1,4 @@
 import sys
-from PySide2 import QtWidgets, QtGui, QtCore
 
 from moneyKart.kartDisplay.iconPack import *
 from moneyKart.kartDisplay.pyQtUtils import *

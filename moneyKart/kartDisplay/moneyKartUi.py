@@ -15,7 +15,7 @@ class MoneyKart(QtWidgets.QWidget):
     def __init__(self):
         super(MoneyKart, self).__init__()
 
-        self.setWindowTitle("Money Kart v{}".format(version))
+        self.setWindowTitle("{} v{}".format(module, version))
         if sys.platform.startswith('win'):
             w, h = ctypes.windll.user32.GetSystemMetrics(0)/2, ctypes.windll.user32.GetSystemMetrics(1)/2
         else:

@@ -10,7 +10,24 @@ except:
     libPath = os.path.join(modulePath, 'lib')
     os.mkdir(libPath)
     with open(os.path.join(libPath, '__init__.py'), 'w') as libModule:
-        libModule.write('""" Data storing module\n"""')
+        libModule.write('""" Data storing module\n"""\n')
+        finalCode = [
+            "import os",
+            "import moneyKart\n",
+            "def getFinalPath():\n"
+            "   docsPath = os.path.expanduser(",
+            "       os.path.join('~', 'Documents')",
+            "   )\n",
+            "   if os.path.exists(docsPath):",
+            "       saveJson = os.path.join(docsPath, moneyKart.module)",
+            "       if not os.path.exists(saveJson):",
+            "           os.mkdir(saveJson)",
+            "   else:",
+            "       saveJson = os.path.dirname(os.path.realpath(__file__))\n",
+            "   return saveJson",
+            ""
+        ]
+        libModule.write('\n'.join(finalCode))
     from moneyKart import lib
 
 
@@ -18,7 +35,7 @@ types = ['spend', 'earn']
 seTypes = ['personal', 'grocery', 'bill', 'salary', 'weekend', 'fuel', 'other']
 
 fileName = "spendEarnTable.json"
-libPath = lib.__path__[0]
+libPath = lib.getFinalPath()
 FILEPATH = os.path.join(libPath, fileName)
 
 

@@ -6,5 +6,5 @@ _log.basicConfig(level=_log.INFO)
 __version__ = version
 
 def checkForUpdates():
-    _log.info("New update is available")
+    # _log.info("New update is available")
     return False
